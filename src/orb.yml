@@ -1,4 +1,6 @@
 version: 2.1
 
 description: |
-  library/golang container images executors and utility commands
+  The library/golang container images executors and utility commands orbs.
+  Source:
+    https://github.com/circleci-orb/golang
