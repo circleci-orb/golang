@@ -1,3 +1,5 @@
+SHELL = /usr/bin/env bash
+
 TAG = $(shell cat ./src/VERSION.txt)
 
 CIRCLECI_FLAGS ?= --skip-update-check
