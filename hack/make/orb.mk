@@ -27,12 +27,14 @@ pack: clean
 .PHONY: validate
 validate:  ## validate orb.
 	@circleci orb validate $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml
-	@yamllint -s .
-	@${MAKE} --silent clean
 
-.PHONY: check
-check:  ## pack orb and run validation.
-check: pack validate
+yamllint:
+	@yamllint -s .
+
+.PHONY: lint
+lint:  ## pack orb and run lint.
+lint: pack validate yamllint
+	@${MAKE} --silent clean
 
 .PHONY: process
 process:  ## processes orb.

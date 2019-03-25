@@ -1,15 +1,15 @@
 version: 2.1
 
 jobs:
-  validate:
+  check:
     docker:
       - image: circleci/circleci-cli:latest
     steps:
       - checkout
       - run:
-          name: Validate orb yaml files
+          name: Pack orb and run lint
           command: |
-            make validate
+            make lint
 
   lint:
     docker:
@@ -27,9 +27,9 @@ jobs:
 
 workflows:
   version: 2
-  validate-lint:
+  check-lint:
     jobs:
-      - validate:
+      - check:
           context: org-global
       - lint:
           context: org-global
