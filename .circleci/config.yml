@@ -4,21 +4,12 @@ jobs:
   validate:
     docker:
       - image: circleci/circleci-cli:latest
-    parallelism: 4
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 18.06.0-ce
       - run:
           name: Validate orb yaml files
           command: |
-            make pack/golang
-            ORB_FILES=$(circleci tests glob "src/*.yml" | circleci tests split)
-            for f in $ORB_FILES;
-            do
-              echo "Validating $f ..."
-              circleci orb validate --skip-update-check $f
-            done
+            make validate
 
   lint:
     docker:
@@ -32,11 +23,11 @@ jobs:
       - run:
           name: Run yamllint
           command: |
-            yamllint .
+            yamllint -s .
 
 workflows:
   version: 2
-  workflows:
+  validate-lint:
     jobs:
       - validate:
           context: org-global
