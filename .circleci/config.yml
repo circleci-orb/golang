@@ -25,11 +25,28 @@ jobs:
           command: |
             make yamllint
 
+  publish:
+    docker:
+      - image: circleci/circleci-cli:latest
+    steps:
+      - checkout
+      - run:
+          name: Publish to production orb registry.
+          command: |
+            make publish
+
 workflows:
   version: 2
-  validate-lint:
+  workflows:
     jobs:
       - validate:
           context: org-global
       - lint:
           context: org-global
+      - publish:
+          context: org-global
+          filters:
+            tags:
+              only: /^.*/
+            branches:
+              ignore: /.*/
