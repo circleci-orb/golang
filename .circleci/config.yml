@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  check:
+  validate:
     docker:
       - image: circleci/circleci-cli:latest
     steps:
@@ -9,27 +9,27 @@ jobs:
       - run:
           name: Pack orb and run lint
           command: |
-            make lint
+            make validate
 
   lint:
     docker:
-      - image: python:3.7.0-alpine3.8
+      - image: python:3.7-stretch
     steps:
-      - checkout
       - run:
           name: Install yamllint
           command: |
-            pip3 install -U -v yamllint
+            pip3 install -U git+https://github.com/adrienverge/yamllint.git
+      - checkout
       - run:
           name: Run yamllint
           command: |
-            yamllint -s .
+            make yamllint
 
 workflows:
   version: 2
-  check-lint:
+  validate-lint:
     jobs:
-      - check:
+      - validate:
           context: org-global
       - lint:
           context: org-global
