@@ -1,4 +1,7 @@
-SHELL = /usr/bin/env bash
+# ----------------------------------------------------------------------------
+# global
+
+SHELL := /usr/bin/env bash
 
 TAG = $(shell cat ./src/VERSION.txt)
 
@@ -15,56 +18,90 @@ ifneq ($(shell command -v bat),)
 	CAT_COMMAND=bat -l yaml -
 endif
 
-.PHONY: create
-create:  ## creates orb registry to org namespace.
-	@circleci orb create $(strip $(CIRCLECI_FLAGS)) --no-prompt ${NAMESPACE}/${ORB} > /dev/null 2>&1 || true
+# ----------------------------------------------------------------------------
+# target
 
-.PHONY: pack
-pack:  ## packing orb.
-pack: clean
+## circleci command
+
+.PHONY: circleci/pack
+circleci/pack:
 	@circleci config pack $(strip $(CIRCLECI_FLAGS)) src/ > src/${ORB}.yml
 
-.PHONY: validate
-validate:  ## validate orb.
+.PHONY: circleci/validate
+circleci/validate:
 	@circleci orb validate $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml
 
-yamllint:
-	@yamllint -s .
+.PHONY: circleci/process
+circleci/process:
+	@circleci orb process $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml | ${CAT_COMMAND}
 
-.PHONY: lint
-lint:  ## pack orb and run lint.
-lint: pack validate yamllint
+.PHONY: circleci/create
+circleci/create: CIRCLECI_FLAGS+=--no-prompt
+circleci/create:
+	@circleci orb create $(strip $(CIRCLECI_FLAGS)) ${NAMESPACE}/${ORB} > /dev/null 2>&1 || true
+
+
+## general
+
+.PHONY: pack
+pack:  ## Packs the orb.
+pack: clean circleci/pack
+
+.PHONY: validate
+validate:  ## Validates the orb.
+validate: pack circleci/validate
 	@${MAKE} --silent clean
 
 .PHONY: process
-process:  ## processes orb.
-process: pack
-	@circleci orb process $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml | ${CAT_COMMAND}
+process:  ## Processes the orb.
+process: pack validate circleci/process
 	@${MAKE} --silent clean
 
-.PHONY: clean
-clean:  ## clean packed orb.
-	@${RM} ./src/${ORB}.yml
+.PHONY: create
+create:  ## Creates orb registry to org namespace.
+create: circleci/create
+
+yamllint:  ## Runs the yamllint linter.
+yamllint: clean
+	@yamllint -s .
+
+
+## publish
 
 .PHONY: publish/dev
-publish/dev: TAG=dev:$(TAG)
-publish/dev: validate create  ## publish ${ORB}.yml to dev orb registry.
-	@echo ${TAG}
-	# circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/$*@${TAG}
+publish/dev:  ## Publish to dev orb registry.
+publish/dev: TAG=dev:$(shell cat ./src/VERSION.txt)
+publish/dev: circleci/pack circleci/validate circleci/create
+	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/${ORB}@${TAG}
+	@${MAKE} --silent clean
 
 .PHONY: publish
-publish: validate create  ## publish ${ORB}.yml to production orb registry.
-	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/$*@${TAG}
+publish:  ## Publish to production orb registry.
+publish: circleci/pack circleci/validate circleci/create
+	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/${ORB}@${TAG}
+	@${MAKE} --silent clean
+
+
+## clean
+
+.PHONY: clean
+clean:  ## Clean packed orb.
+	@${RM} ./src/${ORB}.yml
+
+
+## boilerplate
 
 .PHONY: boilerplate/orb/%
+boilerplate/orb/%:  ## Creates the orb file based on boilerplate.*.txt.
 boilerplate/orb/%: BOILERPLATE_ORB_DIR=$(*D)
 boilerplate/orb/%: BOILERPLATE_ORB_NAME=$(*F)
-boilerplate/orb/%:  ## Creates a orb yaml based on boilerplate.*.txt.
-	@echo "BOILERPLATE_ORB_DIR:  ${BOILERPLATE_ORB_DIR}"
-	@echo "BOILERPLATE_ORB_NAME: ${BOILERPLATE_ORB_NAME}"
+boilerplate/orb/%:
 	if [ ! -d "src/${BOILERPLATE_ORB_DIR}" ]; then mkdir -p "src/${BOILERPLATE_ORB_DIR}"; fi
 	cat ./hack/boilerplate/boilerplate.${BOILERPLATE_ORB_DIR}.txt > src/${BOILERPLATE_ORB_DIR}/${BOILERPLATE_ORB_NAME}
 
+
+## help
+
 .PHONY: help
-help:  ## Show make target help.
+help:  ## Show this help.
 	@perl -nle 'BEGIN {printf "Usage:\n  make \033[33m<target>\033[0m\n\nTargets:\n"} printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2 if /^([a-zA-Z\/_-].+)+:.*?\s+## (.*)/' ${MAKEFILE_LIST}
