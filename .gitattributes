@@ -1,4 +1,4 @@
-# circleci-orb project gitattributes file
+# circleci-orb/golang project gitattributes file
 # https://github.com/github/linguist#using-gitattributes
 
 doc linguist-documentation
