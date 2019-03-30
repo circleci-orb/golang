@@ -68,18 +68,19 @@ yamllint: clean
 
 ## publish
 
-.PHONY: publish/dev
-publish/dev:  ## Publish to dev orb registry.
-publish/dev: TAG=dev:$(shell cat ./src/VERSION.txt)
-publish/dev: circleci/pack circleci/validate circleci/create
-	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/${ORB}@${TAG}
-	@${MAKE} --silent clean
-
 .PHONY: publish
-publish:  ## Publish to production orb registry.
 publish: circleci/pack circleci/validate circleci/create
 	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/${ORB}@${TAG}
 	@${MAKE} --silent clean
+
+.PHONY: publish/dev
+publish/dev:  ## Publish to dev orb registry.
+publish/dev: TAG=dev:$(shell echo "0.0.$$(($$(cat src/VERSION.txt | cut -c 5)+1))")  # increase to next VERSION
+publish/dev: publish
+
+.PHONY: publish/prod
+publish/prod:  ## Publish to production orb registry.
+publish/prod: publish
 
 
 ## clean
