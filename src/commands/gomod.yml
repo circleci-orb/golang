@@ -9,11 +9,14 @@ parameters:
     description: "The paths of mod cache directory."
     type: string
     default: "/go/pkg/mod"
+  file:
+    description: "The file name of checksum for restore_cache and save_cache."
+    type: string
+    default: "go.sum"
 steps:
   - restore_cache:
       name: Restore go modules cache
-      key:
-        - << parameters.key >>-{{ checksum "go.sum" }}
+      key: << parameters.key >>-{{ checksum "<< parameters.file >>" }}
   - run:
       name: Download go module dependencies
       environment:
@@ -23,8 +26,9 @@ steps:
         go mod download
   - save_cache:
       name: Save go modules cache
-      key: << parameters.key >>-{{ checksum "go.sum" }}
-      paths: "<< parameters.paths >>"
+      key: << parameters.key >>-{{ checksum "<< parameters.file >>" }}
+      paths:
+        - "<< parameters.paths >>"
   - run:
       name: Run go mod vendor
       environment:
