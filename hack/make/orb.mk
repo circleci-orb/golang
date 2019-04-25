@@ -43,6 +43,10 @@ circleci/create:
 
 ## general
 
+.PHONY: create
+create:  ## Creates orb registry to org namespace.
+create: circleci/create
+
 .PHONY: pack
 pack:  ## Packs the orb.
 pack: clean circleci/pack
@@ -57,30 +61,25 @@ process:  ## Processes the orb.
 process: pack validate circleci/process
 	@${MAKE} --silent clean
 
-.PHONY: create
-create:  ## Creates orb registry to org namespace.
-create: circleci/create
-
+.PHONY: yamllint
 yamllint:  ## Runs the yamllint linter.
-yamllint: clean
+yamllint: clean pack
 	@yamllint -s .
+	@${MAKE} --silent clean
 
 
 ## publish
 
+.PHONY: publish/dev
+publish/dev:  ## Publish to dev orb registry.
+publish/dev: TAG=dev:$(shell printf 0.0$$(echo $$(printf $$(cat src/VERSION.txt | tr -d '\n') | awk -F. '{OFS="."}{print $$2,$$3}')+0.1 | bc))  # increase to next VERSION
+publish/dev: publish
+
 .PHONY: publish
+publish:  ## Publish to production orb registry.
 publish: circleci/pack circleci/validate circleci/create
 	circleci orb publish $(strip $(CIRCLECI_FLAGS)) ./src/${ORB}.yml ${NAMESPACE}/${ORB}@${TAG}
 	@${MAKE} --silent clean
-
-.PHONY: publish/dev
-publish/dev:  ## Publish to dev orb registry.
-publish/dev: TAG=dev:$(shell echo "0.0.$$(($$(cat src/VERSION.txt | cut -c 5)+1))")  # increase to next VERSION
-publish/dev: publish
-
-.PHONY: publish/prod
-publish/prod:  ## Publish to production orb registry.
-publish/prod: publish
 
 
 ## clean
@@ -97,8 +96,8 @@ boilerplate/orb/%:  ## Creates the orb file based on boilerplate.*.txt.
 boilerplate/orb/%: BOILERPLATE_ORB_DIR=$(*D)
 boilerplate/orb/%: BOILERPLATE_ORB_NAME=$(*F)
 boilerplate/orb/%:
-	if [ ! -d "src/${BOILERPLATE_ORB_DIR}" ]; then mkdir -p "src/${BOILERPLATE_ORB_DIR}"; fi
-	cat ./hack/boilerplate/boilerplate.${BOILERPLATE_ORB_DIR}.txt > src/${BOILERPLATE_ORB_DIR}/${BOILERPLATE_ORB_NAME}
+	@if [ ! -d "src/${BOILERPLATE_ORB_DIR}" ]; then mkdir -p "src/${BOILERPLATE_ORB_DIR}"; fi
+	@cat ./hack/boilerplate/boilerplate.${BOILERPLATE_ORB_DIR}.txt > src/${BOILERPLATE_ORB_DIR}/${BOILERPLATE_ORB_NAME}
 
 
 ## help
