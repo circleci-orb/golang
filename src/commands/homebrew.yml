@@ -9,5 +9,5 @@ steps:
   - run:
       name: Install latest go via homebrew
       command: |
-        brew upgrade << parameters.formula >> || brew install << parameters.formula >> || true
+        brew install << parameters.formula >> || brew upgrade << parameters.formula >> || true
         go version
