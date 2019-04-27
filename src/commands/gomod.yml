@@ -22,7 +22,6 @@ steps:
       environment:
         GO111MODULE: "on"
       command: |
-        go env
         go mod download
   - save_cache:
       name: Save go modules cache
@@ -34,5 +33,4 @@ steps:
       environment:
         GO111MODULE: "on"
       command: |
-        go env
         go mod vendor -v
