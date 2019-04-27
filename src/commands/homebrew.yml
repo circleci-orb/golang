@@ -11,3 +11,4 @@ steps:
       command: |
         brew install << parameters.formula >> || brew upgrade << parameters.formula >> || true
         go version
+        go env
