@@ -5,7 +5,7 @@ parameters:
     description: "The key of restore_cache and save_cache."
     type: string
     default: "gomod"
-  path:
+  paths:
     description: "The paths of mod cache directory."
     type: string
     default: "/go/pkg/mod"
@@ -27,4 +27,4 @@ steps:
   - save_cache:
       name: Save go modules cache
       key: << parameters.key >>-{{ checksum "<< parameters.file >>" }}
-      paths: "<< parameters.path >>"
+      paths: "<< parameters.paths >>"
