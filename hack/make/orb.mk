@@ -92,6 +92,17 @@ clean:  ## Clean packed orb.
 	@${RM} ./src/${ORB}.yml
 
 
+## release
+
+.PHONY: release
+release:
+	@git push
+	git add src/VERSION.txt
+	git commit -m "all: bump ${TAG} version"
+	hub release create -m 'Release ${TAG}.' v${TAG}
+	git fetch --all --prune --verbose
+
+
 ## boilerplate
 
 .PHONY: boilerplate/orb/%
