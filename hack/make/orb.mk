@@ -28,7 +28,7 @@ endif
 
 .PHONY: circleci/pack
 circleci/pack:
-	@circleci config pack $(strip $(CIRCLECI_FLAGS)) src/ > src/${ORB}.yml
+	@circleci config pack $(strip $(CIRCLECI_FLAGS)) src > src/${ORB}.yml
 
 .PHONY: circleci/validate
 circleci/validate:
