@@ -5,10 +5,7 @@ SHELL := /usr/bin/env bash
 
 TAG = $(shell cat ./src/VERSION.txt)
 
-CIRCLECI_FLAGS ?=
-ifeq ($(CI),)
-    CIRCLECI_FLAGS+=--skip-update-check
-endif
+CIRCLECI_FLAGS ?= --skip-update-check
 ifneq ($(V),)
 	CIRCLECI_FLAGS+=--debug
 endif
