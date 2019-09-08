@@ -2,7 +2,7 @@ parameters:
   tag:
     description: "The tag to use on the golang:stretch image"
     type: string
-    default: "1.12-stretch"
+    default: "1.13-stretch"
 docker:
   - image: "golang:<< parameters.tag >>"
 shell: /bin/bash -eu -o pipefail
