@@ -1,6 +1,6 @@
 # cci-orb/golang
 
-[![CircleCI][circleci-badge]][circleci] [![CircleCI Orb][orb-badge]][orb] [![Releases][release-badge]][release] [![GA][ga-badge]][ga]
+[![CircleCI][circleci-badge]][circleci] [![CircleCI Orb][orb-badge]][orb] [![GA][ga-badge]][ga]
 
 The [library/golang][library/golang] container image executors and utility command orbs.
 
@@ -11,10 +11,8 @@ The [library/golang][library/golang] container image executors and utility comma
 <!-- badge links -->
 [circleci]: https://circleci.com/gh/circleci-orb/workflows/golang
 [orb]: https://circleci.com/orbs/registry/orb/cci-orb/golang
-[release]: https://github.com/circleci-orb/golang/releases
-[ga]: https://github.com/circleci-orb/circleci-orb
+[ga]: https://github.com/cci-orb/golang
 
-[circleci-badge]: https://img.shields.io/circleci/project/github/circleci-orb/golang/master.svg?style=for-the-badge&label=CIRCLECI&logo=circleci
-[orb-badge]: https://img.shields.io/badge/ORB-CCI--ORB/GOLANG-209DB7.svg?style=for-the-badge&logo=circleci
-[release-badge]: https://img.shields.io/github/release/circleci-orb/golang.svg?logo=github&style=for-the-badge&cacheSeconds=60
+[circleci-badge]: https://img.shields.io/circleci/project/github/circleci-orb/golang/master.svg?style=for-the-badge&logo=circleci
+[orb-badge]: https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/cci-orb/golang&logo=circleci&style=for-the-badge&cacheSeconds=60
 [ga-badge]: https://gh-ga-beacon.appspot.com/UA-89201129-1/circleci-orb/golang?pixel&useReferer
