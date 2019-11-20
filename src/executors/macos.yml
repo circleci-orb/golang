@@ -2,12 +2,12 @@ parameters:
   xcode:
     description: "The Xcode version"
     type: string
-    default: "10.3.0"
+    default: "11.2.1"  # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
 macos:
   xcode: "<< parameters.xcode >>"
 environment:
   PATH: /Users/distiller/go/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
   GOPATH: /Users/distiller/go
-  HOMEBREW_NO_AUTO_UPDATE: "true"
-  HOMEBREW_NO_INSTALL_CLEANUP: "true"
+  HOMEBREW_NO_AUTO_UPDATE: 1
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
 shell: /bin/bash --login -eu -o pipefail
