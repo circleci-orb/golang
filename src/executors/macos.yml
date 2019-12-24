@@ -1,8 +1,23 @@
 parameters:
   xcode:
     description: "The Xcode version"
-    type: string
-    default: "11.2.1"  # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+    type: enum
+    # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+    enum: [
+      "11.3.0",
+      "11.2.1",
+      "11.2.0",
+      "11.1.0",
+      "11.0.0",
+      "10.3.0",
+      "10.2.1",
+      "10.1.0",
+      "10.0.0",
+      "9.4.1",
+      "9.3.1",
+      "9.0.1",
+      "8.3.3"
+    ]
 macos:
   xcode: "<< parameters.xcode >>"
 environment:
