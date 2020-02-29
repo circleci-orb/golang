@@ -2,7 +2,7 @@ parameters:
   tag:
     description: "The tag to use on the golang:buster image"
     type: string
-    default: "1.13-buster"
+    default: "1.14-buster"
 docker:
   - image: "golang:<< parameters.tag >>"
 shell: /bin/bash -eu -o pipefail
