@@ -72,7 +72,7 @@ yamllint: clean pack
 
 .PHONY: publish/dev
 publish/dev:  ## Publish to dev orb registry.
-publish/dev: TAG=dev:$(shell printf 0.0$$(echo $$(printf $$(cat src/VERSION.txt | tr -d '\n') | awk -F. '{OFS="."}{print $$2,$$3}')+0.1 | bc))  # increase to next VERSION
+publish/dev: TAG=dev:$(shell printf 0.%.1f $$(echo $$(printf $$(cat src/VERSION.txt) | awk -F. '{OFS="."}{print $$2,$$3}')+0.1 | bc))
 publish/dev: publish
 
 .PHONY: publish
