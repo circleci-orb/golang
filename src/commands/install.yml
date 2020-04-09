@@ -1,0 +1,28 @@
+description: |
+  Install go toolchain from tarballs.
+parameters:
+  version:
+    description: "Go version."
+    type: string
+  path:
+    description: "Install path."
+    type: string
+    default: /usr/local
+steps:
+  - run:
+      name: Install go toolchain
+      command: |
+        goos=$(uname -s | tr '[:upper:]' '[:lower:]')
+        case $goos in
+          linux)
+            if [[ -d << parameters.path >>/go ]]; then rm -rf << parameters.path >>/go; fi
+            dpkgArch="$(dpkg --print-architecture)"
+            goarch="${dpkgArch##*-}"
+            curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-${goarch}.tar.gz | tar -xzf - -C << parameters.path >>
+            ;;
+          darwin)
+            curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-amd64.tar.gz | sudo tar -xzf - -C << parameters.path >>
+            ;;
+        esac
+        go version
+        go env
