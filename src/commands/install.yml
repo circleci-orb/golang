@@ -7,10 +7,10 @@ parameters:
   path:
     description: "Install path."
     type: string
-    default: /usr/local
+    default: "/usr/local"
 steps:
   - run:
-      name: Install go toolchain
+      name: Install Go toolchain
       command: |
         goos=$(uname -s | tr '[:upper:]' '[:lower:]')
         case $goos in
@@ -20,9 +20,14 @@ steps:
             goarch="${dpkgArch##*-}"
             curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-${goarch}.tar.gz | tar -xzf - -C << parameters.path >>
             ;;
+
           darwin)
             curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-amd64.tar.gz | sudo tar -xzf - -C << parameters.path >>
+            sudo chown distiller:admin /usr/local/go
             ;;
         esac
+  - run:
+      name: Check Go version
+      command: |
         go version
         go env
