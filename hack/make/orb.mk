@@ -94,9 +94,8 @@ clean:  ## Clean packed orb.
 .PHONY: release
 release:
 	git add src/VERSION.txt
-	git commit -m "all: bump ${TAG} version"
+	git commit -m "VERSION: bump ${TAG} version"
 	git push
-	git push --tags
 	hub release create -m 'v${TAG}' v${TAG}
 	git fetch --all --prune --verbose
 
