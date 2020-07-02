@@ -18,13 +18,16 @@ steps:
       name: Restore go modules cache
       keys:
         - << parameters.key >>-{{ checksum "<< parameters.file >>" }}
+
   - run:
       name: Download go module dependencies
       environment:
         GO111MODULE: "on"
       command: |
         go mod download
+        go mod vendor
+
   - save_cache:
       name: Save go modules cache
       key: << parameters.key >>-{{ checksum "<< parameters.file >>" }}
-      paths: "<< parameters.paths >>"
+      paths: << parameters.paths >>
