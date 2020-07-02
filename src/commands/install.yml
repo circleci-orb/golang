@@ -12,6 +12,8 @@ steps:
   - run:
       name: Install Go toolchain
       command: |
+        if command -v go; then exit 0; fi
+
         goos=$(uname -s | tr '[:upper:]' '[:lower:]')
         case $goos in
           linux)
