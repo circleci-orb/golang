@@ -42,11 +42,9 @@ executors:
         description: "The Xcode version"
         type: enum
         enum: [  # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-          "12.0.0-UA",  # Xcode 12.0 for macOS Universal Apps Beta 1 (12A8158a) macOS 10.15.4
-          "12.0.0",     # Xcode 12.0 Beta 1 (12A6159)                           macOS 10.15.4
-          "11.6.0",     # Xcode 11.6 Beta 1 (11N700h)                           macOS 10.15.4
-          "11.6.0",     # Xcode 11.5 Beta 1 (Build 11N605c)                     macOS 10.15.4
-          "11.5.0",     # Xcode 11.5 Beta 1 (Build 11N605c)                     macOS 10.15.4
+          "12.0.0",     # Xcode 12.0 Beta 3 (Build 12A8169g)                    macOS 10.15.5
+          "11.6.0",     # Xcode 11.6        (Build 11E708)                      macOS 10.15.5
+          "11.5.0",     # Xcode 11.5 GM     (Build 11E608c)                     macOS 10.15.4
           "11.4.1",     # Xcode 11.4.1      (Build 11E503a)                     macOS 10.15.4
           "11.4.0",     # Xcode 11.4        (Build 11E146)                      macOS 10.15.3
           "11.3.1",     # Xcode 11.3.1      (Build 11C505)                      macOS 10.15.1
