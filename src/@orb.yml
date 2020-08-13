@@ -13,7 +13,7 @@ executors:
       tag:
         description: "The tag to use on the golang debian image for linux platform."
         type: string
-        default: "1.14-buster"
+        default: "1.15-buster"
       shell:
         description: "Shell to use for execution command."
         type: string
@@ -27,7 +27,7 @@ executors:
       tag:
         description: "The tag to use on the golang alpine image for linux platform."
         type: string
-        default: "1.14-alpine"
+        default: "1.15-alpine"
       shell:
         description: "Shell to use for execution command."
         type: string
