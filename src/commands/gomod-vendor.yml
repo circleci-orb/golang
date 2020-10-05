@@ -1,5 +1,6 @@
 description: |
   Run `go mod vendor`.
+
 steps:
   - run:
       name: Run go mod vendor
