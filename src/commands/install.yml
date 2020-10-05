@@ -1,13 +1,15 @@
 description: |
-  Install go toolchain from tarballs.
+  Install Go toolchain from tarballs.
+
 parameters:
   version:
     description: "Go version."
     type: string
   path:
-    description: "Install path."
+    description: "Install path prefix."
     type: string
     default: "/usr/local"
+
 steps:
   - run:
       name: Install Go toolchain
@@ -27,7 +29,13 @@ steps:
             curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-amd64.tar.gz | sudo tar -xzf - -C << parameters.path >>
             sudo chown distiller:admin << parameters.path >>/go
             ;;
+
+          *)
+            echo "Not supported GOOS=$goos"
+            exit 1
+            ;;
         esac
+
   - run:
       name: Check Go version
       command: |
