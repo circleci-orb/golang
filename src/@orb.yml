@@ -10,8 +10,8 @@ display:
 executors:
   linux:
     parameters:
-      tag:
-        description: "The tag to use on the golang debian image for linux platform."
+      version:
+        description: "The Go version to use on the golang debian image for linux platform."
         type: string
         default: "1.15-buster"
       shell:
@@ -19,13 +19,13 @@ executors:
         type: string
         default: "/bin/bash -eu -o pipefail"
     docker:
-      - image: "golang:<< parameters.tag >>"
+      - image: "golang:<< parameters.version >>"
     shell: "<< parameters.shell >>"
 
   alpine:
     parameters:
-      tag:
-        description: "The tag to use on the golang alpine image for linux platform."
+      version:
+        description: "The Go version to use on the golang alpine image for linux platform."
         type: string
         default: "1.15-alpine"
       shell:
@@ -33,7 +33,7 @@ executors:
         type: string
         default: "/bin/ash -eu -o pipefail"
     docker:
-      - image: "golang:<< parameters.tag >>"
+      - image: "golang:<< parameters.version >>"
     shell: '<< parameters.shell >>'
 
   macos:

@@ -27,7 +27,7 @@ steps:
 
           darwin)
             curl -sSL https://golang.org/dl/go<< parameters.version >>.${goos}-amd64.tar.gz | sudo tar -xzf - -C << parameters.path >>
-            sudo chown distiller:admin << parameters.path >>/go
+            sudo chown ${USER}:admin << parameters.path >>/go
             ;;
 
           *)
