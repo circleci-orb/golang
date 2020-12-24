@@ -42,6 +42,7 @@ executors:
         description: "The Xcode version"
         type: enum
         enum: [  # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+          "12.3.0",  # Xcode 12.3      (12C33)          macOS 10.15.5
           "12.2.0",  # Xcode 12.2      (12B45b)         macOS 10.15.5
           "12.1.1",  # Xcode 12.1.1 RC (12A7605b)       macOS 10.15.5
           "12.1.0",  # Xcode 12.1      (12A7403)        macOS 10.15.5
